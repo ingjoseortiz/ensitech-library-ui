@@ -1,4 +1,7 @@
+//React
 import * as React from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+//Material ui
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,15 +14,22 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+
 //custom components
 import LoginForm from "../login/login";
 import BooksCatalog from "../../components/books/BooksCatalog.js";
 import AddBooksForm from "../books/Create/AddForm.js";
+
 const drawerWidth = 200;
 
 const DrawerLeft = () => {
+  const handleLogout = () => {
+    if (localStorage.getItem("token")) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -50,7 +60,7 @@ const DrawerLeft = () => {
       >
         <Toolbar />
         <Divider />
-        <List>
+        {/* <List>
           {["Login", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
@@ -59,6 +69,35 @@ const DrawerLeft = () => {
               </ListItemButton>
             </ListItem>
           ))}
+        </List> */}
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{<AddRoundedIcon />}</ListItemIcon>
+              <ListItemText>
+                {localStorage.getItem("token") && (
+                  <a onClick={handleLogout}>logout</a>
+                )}
+                {/* {!localStorage.getItem("token") && <a>login</a>} */}
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{<AddRoundedIcon />}</ListItemIcon>
+              <ListItemText>
+                <a href="addbooksform">Agregar Libro</a>
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{<AddRoundedIcon />}</ListItemIcon>
+              <ListItemText>
+                <a href="bookscatalog">Catalogo Libros</a>
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
       </Drawer>
@@ -67,16 +106,24 @@ const DrawerLeft = () => {
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
         <Toolbar />
-        <AddBooksForm></AddBooksForm>
-        <hr></hr>
+        {/* <AddBooksForm></AddBooksForm> */}
 
-        <LoginForm></LoginForm>
+        {/* <LoginForm></LoginForm> */}
+        <BrowserRouter>
+          <Routes>
+            <Route path="/">
+              <Route path="bookscatalog" element={<BooksCatalog />} />
+              <Route path="addbooksform" element={<AddBooksForm />} />
+              <Route path="login" element={<LoginForm />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </Box>
       <Box
         component="main"
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
-        <BooksCatalog></BooksCatalog>
+        {/* <BooksCatalog></BooksCatalog> */}
       </Box>
     </Box>
   );

@@ -59,7 +59,7 @@ export default function MediaCard() {
                 <p>{item.title}</p>
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                <p>id: {item.id}</p>
+                {/* <p>id: {item.id}</p> */}
                 <p>Author: {item.author}</p>
                 <p>Genero:{item.genre}</p>
                 <p>Cantidad:{item.inventory.quantity}</p>
