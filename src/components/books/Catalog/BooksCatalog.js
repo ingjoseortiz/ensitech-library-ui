@@ -17,14 +17,16 @@ import { type } from "@testing-library/user-event/dist/type";
 export default function MediaCard() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [message, setMessage] = "";
 
-  const handleSubmitRent = (value) => {
+  const handleSubmitRent = async (value) => {
     const data = {
       id: value,
     };
     console.log(value);
-    ApiRentBook(data);
-    setIsLoading(true);
+    const response = await ApiRentBook(data).then(() => {
+      setIsLoading(true);
+    });
   };
 
   const handleSubmitReturn = (value) => {
@@ -35,6 +37,7 @@ export default function MediaCard() {
     setIsLoading(true);
     console.log(value);
   };
+
   useEffect(() => {
     if (isLoading) {
       const fetchBooks = async () => {
@@ -70,7 +73,11 @@ export default function MediaCard() {
                 <br />
                 Genero:{item.genre}
                 <br />
-                Cantidad:{item.inventory.quantity}
+                {item.inventory.quantity == 0 ? (
+                  <span style={{ color: "red" }}>Agotado</span>
+                ) : (
+                  `Cantidad: ${item.inventory.quantity}`
+                )}
               </Typography>
             </CardContent>
             <CardActions>

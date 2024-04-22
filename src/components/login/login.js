@@ -8,10 +8,12 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
+import { Typography } from "@mui/material";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -21,10 +23,21 @@ function LoginForm() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    ApiCall({ username, password });
-    window.location.href = "/";
+  const handleSubmit = async () => {
+    const response = await ApiCall({ username, password })
+      .then((data) => {
+        console.log(data.data);
+        if (data.data === "Incorrect Credentials") {
+          setMessage("Error de usuario y/o contraseña");
+        } else {
+          alert("bienvenido");
+          window.location.href = "/";
+        }
+        //window.location.href = "/";
+      })
+      .catch((e) => {
+        //alert(e.statusText);
+      });
   };
 
   return (
@@ -64,6 +77,7 @@ function LoginForm() {
       <Button variant="contained" onClick={handleSubmit}>
         Login
       </Button>
+      <Typography sx={{ color: "red" }}>{message} </Typography>
     </Box>
   );
 }

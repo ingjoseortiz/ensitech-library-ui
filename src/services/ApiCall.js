@@ -1,22 +1,25 @@
 import axios from "axios";
 
-export function ApiCall(formData) {
-  console.log(formData);
+export async function ApiCall(formData) {
+  //console.log(formData);
   const fetchData = async () => {
-    const response = await axios
+    return await axios
       .post("http://localhost:5146/api/user/login", {
         username: formData.username,
         password: formData.password,
       })
-      .then(function (response) {
+      .then((response) => {
         console.log(response);
-        localStorage.setItem("token", response.data);
+        if (response.data !== "Incorrect Credentials") {
+          localStorage.setItem("token", response.data);
+        }
+        return response;
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   };
-  return fetchData();
+  return await fetchData();
   // Empty dependency array means this effect will only run once, similar to componentDidMount in class components
 }
 
