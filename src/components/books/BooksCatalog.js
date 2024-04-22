@@ -12,18 +12,17 @@ import {
   ApiBookCatalog,
   ApiReturnBook,
 } from "../../services/ApiCall";
+import { type } from "@testing-library/user-event/dist/type";
 
 export default function MediaCard() {
-  const [title, setTitle] = useState("");
-  const [id, setId] = useState("");
   const [data, setData] = useState([]);
 
   const handleSubmitRent = (value) => {
     const data = {
       id: value,
     };
-    ApiRentBook(data);
     console.log(value);
+    ApiRentBook(data);
   };
 
   const handleSubmitReturn = (value) => {
@@ -37,11 +36,13 @@ export default function MediaCard() {
     const fetchBooks = async () => {
       const apiCall = await ApiBookCatalog();
       const response = await apiCall;
-      setData(response.data["$values"]);
+      setData(response.data);
+      //setData(response.data["$values"]);
       return response;
     };
 
     fetchBooks();
+    console.log(typeof data);
   }, []);
 
   return (
@@ -54,32 +55,37 @@ export default function MediaCard() {
               image="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*42ebJizcUtZBNIZPmmMZ5Q.jpeg"
               title="green iguana"
             />
-            <CardContent sx={{ height: 180 }}>
-              <Typography gutterBottom variant="h5" component="div">
-                <p>{item.title}</p>
+            <CardContent sx={{ height: 130 }}>
+              <Typography gutterBottom variant="h5">
+                {item.Title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {/* <p>id: {item.id}</p> */}
-                <p>Author: {item.author}</p>
-                <p>Genero:{item.genre}</p>
-                <p>Cantidad:{item.inventory.quantity}</p>
+                Author: {item.Author}
+                <br />
+                Genero:{item.Genre}
+                <br />
+                Cantidad:{item.Quantity}
               </Typography>
             </CardContent>
             <CardActions>
-              <Button
-                onClick={() => handleSubmitRent(item.id)}
-                size="small"
-                variant="contained"
-              >
-                Rentar
-              </Button>
-              <Button
-                size="small"
-                variant="outlined"
-                onClick={() => handleSubmitReturn(item.id)}
-              >
-                Devolver
-              </Button>
+              {!item.IsActive && (
+                <Button
+                  onClick={() => handleSubmitRent(item.Id)}
+                  size="small"
+                  variant="contained"
+                >
+                  Rentar
+                </Button>
+              )}
+              {item.IsActive && (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() => handleSubmitReturn(item.Id)}
+                >
+                  Devolver
+                </Button>
+              )}
             </CardActions>
           </Card>
           <br />

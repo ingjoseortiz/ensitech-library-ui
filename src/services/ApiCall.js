@@ -124,7 +124,7 @@ export async function ApiReturnBook(data) {
       .patch(
         "http://localhost:5146/api/books/return",
         {
-          id: data.id,
+          Id: data.id,
         },
         config
       )
