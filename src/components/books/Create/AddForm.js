@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 //mui
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -9,29 +9,33 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 //custom components
 import { ApiBookAdd } from "../../../services/ApiCall";
+import { Typography } from "@mui/material";
 
 export default function AddBooksForm() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [genre, setGenre] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [data, setData] = useState([]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data = {
       title: title,
       author: author,
       genre: genre,
       quantity,
-      quantity,
     };
-    ApiBookAdd(data);
+
+    const response = await ApiBookAdd(data);
+    setData(response);
+    setTitle("");
+    setAuthor("");
+    setGenre("");
+    setQuantity("");
   };
-  //   useEffect(() => {
-  //     console.log(title);
-  //     console.log(author);
-  //     console.log(genre);
-  //     console.log(quantity);
-  //   }, [title, author, genre, quantity]);
+  // useEffect(() => {
+  //   console.log(data.data);
+  // }, [data]);
 
   return (
     <Box
@@ -42,11 +46,13 @@ export default function AddBooksForm() {
       noValidate
       autoComplete="off"
     >
+      <h2>Agregar nuevo libro</h2>
       <FormControl variant="standard">
         <InputLabel htmlFor="component-simple">Titulo</InputLabel>
         <Input
           type="text"
           name="title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <FormHelperText>required</FormHelperText>
@@ -56,6 +62,7 @@ export default function AddBooksForm() {
         <Input
           type="text"
           name="Author"
+          value={author}
           onChange={(e) => setAuthor(e.target.value)}
         />
         <FormHelperText>required</FormHelperText>
@@ -65,6 +72,7 @@ export default function AddBooksForm() {
         <Input
           type="text"
           name="Genre"
+          value={genre}
           onChange={(e) => setGenre(e.target.value)}
         />
         <FormHelperText>required</FormHelperText>
@@ -73,14 +81,25 @@ export default function AddBooksForm() {
         <InputLabel htmlFor="component-error">Cantidad</InputLabel>
         <Input
           id="component-error"
-          type="text"
-          name="Genre"
+          type="number"
+          name="Quantity"
+          value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
         />
       </FormControl>
-      <Button variant="contained" onClick={handleSubmit}>
-        Guardar
-      </Button>
+      <br />
+      <FormControl variant="standard">
+        <Button variant="contained" onClick={handleSubmit}>
+          Guardar
+        </Button>
+      </FormControl>
+      <br />
+      {data.data?.title && (
+        <FormControl variant="standard">
+          <Typography>Libro: {JSON.stringify(data.data.title)}</Typography>
+          <Typography>ha sido creado con exito!</Typography>
+        </FormControl>
+      )}
     </Box>
   );
 }

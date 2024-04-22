@@ -139,3 +139,29 @@ export async function ApiReturnBook(data) {
   };
   return await fetchData();
 }
+
+export async function ApiRentedBooks(data) {
+  const fetchData = async () => {
+    let value = localStorage.getItem("token");
+    console.log("TOKEN: " + value);
+
+    const config = {
+      headers: {
+        ContentType: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    return await axios
+      .post("http://localhost:5146/api/rented", config)
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return error;
+      });
+  };
+  return await fetchData();
+}

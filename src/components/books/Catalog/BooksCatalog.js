@@ -11,11 +11,12 @@ import {
   ApiRentBook,
   ApiBookCatalog,
   ApiReturnBook,
-} from "../../services/ApiCall";
+} from "../../../services/ApiCall";
 import { type } from "@testing-library/user-event/dist/type";
 
 export default function MediaCard() {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleSubmitRent = (value) => {
     const data = {
@@ -23,6 +24,7 @@ export default function MediaCard() {
     };
     console.log(value);
     ApiRentBook(data);
+    setIsLoading(true);
   };
 
   const handleSubmitReturn = (value) => {
@@ -30,23 +32,27 @@ export default function MediaCard() {
       id: value,
     };
     ApiReturnBook(data);
+    setIsLoading(true);
     console.log(value);
   };
   useEffect(() => {
-    const fetchBooks = async () => {
-      const apiCall = await ApiBookCatalog();
-      const response = await apiCall;
-      setData(response.data);
-      //setData(response.data["$values"]);
-      return response;
-    };
-
-    fetchBooks();
+    if (isLoading) {
+      const fetchBooks = async () => {
+        const apiCall = await ApiBookCatalog();
+        const response = await apiCall;
+        // setData(response.data);
+        setData(response.data["$values"]);
+        return response;
+      };
+      fetchBooks();
+      setIsLoading(false);
+    }
     console.log(typeof data);
-  }, []);
+  }, [isLoading]);
 
   return (
     <>
+      <h2>Catalogo de Libros</h2>
       {data.map((item, index) => (
         <div key={index}>
           <Card sx={{ maxWidth: 345 }}>
@@ -57,20 +63,20 @@ export default function MediaCard() {
             />
             <CardContent sx={{ height: 130 }}>
               <Typography gutterBottom variant="h5">
-                {item.Title}
+                {item.title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Author: {item.Author}
+                Author: {item.author}
                 <br />
-                Genero:{item.Genre}
+                Genero:{item.genre}
                 <br />
-                Cantidad:{item.Quantity}
+                Cantidad:{item.inventory.quantity}
               </Typography>
             </CardContent>
             <CardActions>
               {!item.IsActive && (
                 <Button
-                  onClick={() => handleSubmitRent(item.Id)}
+                  onClick={() => handleSubmitRent(item.id)}
                   size="small"
                   variant="contained"
                 >
@@ -81,7 +87,7 @@ export default function MediaCard() {
                 <Button
                   size="small"
                   variant="outlined"
-                  onClick={() => handleSubmitReturn(item.Id)}
+                  onClick={() => handleSubmitReturn(item.id)}
                 >
                   Devolver
                 </Button>

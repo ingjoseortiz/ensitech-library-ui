@@ -18,8 +18,9 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 //custom components
 import LoginForm from "../login/login";
-import BooksCatalog from "../../components/books/BooksCatalog.js";
+import BooksCatalog from "../books/Catalog/BooksCatalog.js";
 import AddBooksForm from "../books/Create/AddForm.js";
+import RentedBooks from "../books/rented/RentedBooks.js";
 
 const drawerWidth = 200;
 
@@ -27,6 +28,7 @@ const DrawerLeft = () => {
   const handleLogout = () => {
     if (localStorage.getItem("token")) {
       localStorage.removeItem("token");
+      alert("Has cerrado la session.");
       window.location.href = "/";
     }
   };
@@ -98,6 +100,14 @@ const DrawerLeft = () => {
               </ListItemText>
             </ListItemButton>
           </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>{<AddRoundedIcon />}</ListItemIcon>
+              <ListItemText>
+                <a href="rentedbooks">Libros Rentados</a>
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
         </List>
         <Divider />
       </Drawer>
@@ -113,6 +123,7 @@ const DrawerLeft = () => {
           <Routes>
             <Route path="/">
               <Route path="bookscatalog" element={<BooksCatalog />} />
+              <Route path="rentedbooks" element={<RentedBooks />} />
               <Route path="addbooksform" element={<AddBooksForm />} />
               <Route path="login" element={<LoginForm />} />
             </Route>
