@@ -16,14 +16,15 @@ export async function ApiCall(formData) {
         password: formData.password,
       })
       .then((response) => {
-        console.log(response);
+        console.log("trete", response);
         if (response.data !== "Incorrect Credentials") {
           localStorage.setItem("token", response.data);
         }
         return response;
       })
       .catch((error) => {
-        console.log(error);
+        //console.log("errr", error);
+        return error;
       });
   };
   return await fetchData();

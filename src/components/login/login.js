@@ -26,8 +26,9 @@ function LoginForm() {
   const handleSubmit = async () => {
     const response = await ApiCall({ username, password })
       .then((data) => {
-        console.log(data.data);
-        if (data.data === "Incorrect Credentials") {
+        // if (data.data === "Incorrect Credentials") {
+        console.log("testing", data);
+        if (data.status !== 200) {
           setMessage("Error de usuario y/o contraseña");
         } else {
           alert("bienvenido");
@@ -36,6 +37,7 @@ function LoginForm() {
         //window.location.href = "/";
       })
       .catch((e) => {
+        setMessage("Error de usuario y/o contraseña");
         //alert(e.statusText);
       });
   };
