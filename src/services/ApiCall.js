@@ -156,7 +156,7 @@ export async function ApiRentedBooks(data) {
     };
 
     return await axios
-      .post("http://localhost:5146/api/rented", config)
+      .post("http://localhost:5146/api/books/rented", config)
       .then((response) => {
         console.log(response);
         return response;

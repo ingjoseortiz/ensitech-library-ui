@@ -19,13 +19,14 @@ export default function RentedBooks() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const handleSubmitReturn = (value) => {
+  const handleSubmitReturn = async (value) => {
     const data = {
       id: value,
     };
-    ApiReturnBook(data);
-    setIsLoading(true);
-    console.log(value);
+    const resp = await ApiReturnBook(data).then(() => {
+      setIsLoading(true);
+      console.log(value);
+    });
   };
 
   useEffect(() => {
@@ -64,19 +65,19 @@ export default function RentedBooks() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {item.title}
+                  {item.Title}
                 </TableCell>
-                <TableCell align="right">{item.author}</TableCell>
-                <TableCell align="right">{item.genre}</TableCell>
-                <TableCell align="right">{item.date}</TableCell>
+                <TableCell align="right">{item.Author}</TableCell>
+                <TableCell align="right">{item.Genre}</TableCell>
+                <TableCell align="right">{item.Date}</TableCell>
                 <TableCell align="right">
                   {/* {item.isActive ? "devolver" : "entregado"} */}
 
-                  {!item.isReturned ? (
+                  {!item.IsReturned ? (
                     <Button
                       size="small"
                       variant="outlined"
-                      onClick={() => handleSubmitReturn(item.id)}
+                      onClick={() => handleSubmitReturn(item.Id)}
                     >
                       Devolver
                     </Button>
