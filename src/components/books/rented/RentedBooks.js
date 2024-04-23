@@ -73,7 +73,7 @@ export default function RentedBooks() {
                 <TableCell align="right">
                   {/* {item.isActive ? "devolver" : "entregado"} */}
 
-                  {!item.IsReturned ? (
+                  {!item.IgisReturned ? (
                     <Button
                       size="small"
                       variant="outlined"
