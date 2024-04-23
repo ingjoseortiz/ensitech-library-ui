@@ -1,5 +1,12 @@
 import axios from "axios";
 
+const config = {
+  headers: {
+    ContentType: "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+};
+
 export async function ApiCall(formData) {
   //console.log(formData);
   const fetchData = async () => {
@@ -157,6 +164,33 @@ export async function ApiRentedBooks(data) {
 
     return await axios
       .post("http://localhost:5146/api/books/rented", config)
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+        return error;
+      });
+  };
+  return await fetchData();
+}
+
+export async function ApiDeleteBook(data) {
+  const fetchData = async () => {
+    return await axios
+      .post(
+        "http://localhost:5146/api/books/remove",
+        {
+          Id: data.id,
+        },
+        {
+          headers: {
+            ContentType: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         return response;

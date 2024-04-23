@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import {
   ApiRentBook,
   ApiBookCatalog,
-  ApiReturnBook,
+  ApiDeleteBook,
 } from "../../../services/ApiCall";
 import { type } from "@testing-library/user-event/dist/type";
 
@@ -29,13 +29,15 @@ export default function MediaCard() {
     });
   };
 
-  const handleSubmitReturn = (value) => {
+  const handleSubmitDelete = async (value) => {
     const data = {
       id: value,
     };
-    ApiReturnBook(data);
-    setIsLoading(true);
-    console.log(value);
+    const resp = await ApiDeleteBook(data).then((resp) => {
+      setIsLoading(true);
+      alert("libro eliminado con ID:" + data.id);
+      console.log(resp);
+    });
   };
 
   useEffect(() => {
@@ -90,15 +92,13 @@ export default function MediaCard() {
                   Rentar
                 </Button>
               )}
-              {item.IsActive && (
-                <Button
-                  size="small"
-                  variant="outlined"
-                  onClick={() => handleSubmitReturn(item.id)}
-                >
-                  Devolver
-                </Button>
-              )}
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => handleSubmitDelete(item.id)}
+              >
+                Eliminar
+              </Button>
             </CardActions>
           </Card>
           <br />
