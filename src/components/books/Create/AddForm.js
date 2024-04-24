@@ -25,13 +25,19 @@ export default function AddBooksForm() {
       genre: genre,
       quantity,
     };
-
-    const response = await ApiBookAdd(data);
-    setData(response);
-    setTitle("");
-    setAuthor("");
-    setGenre("");
-    setQuantity("");
+    if (title == "" || author == "" || quantity == "" || genre == "") {
+    } else {
+      const response = await ApiBookAdd(data).then((response) => {
+        setData(response);
+        setTitle("");
+        setAuthor("");
+        setGenre("");
+        setQuantity("");
+        setTimeout(() => {
+          setData("");
+        }, 3000);
+      });
+    }
   };
   // useEffect(() => {
   //   console.log(data.data);
@@ -96,7 +102,9 @@ export default function AddBooksForm() {
       <br />
       {data.data?.title && (
         <FormControl variant="standard">
-          <Typography>Libro: {JSON.stringify(data.data.title)}</Typography>
+          <Typography id="message">
+            Libro: {JSON.stringify(data.data.title)}
+          </Typography>
           <Typography>ha sido creado con exito!</Typography>
         </FormControl>
       )}
