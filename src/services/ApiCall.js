@@ -8,7 +8,6 @@ const config = {
 };
 
 export async function ApiCall(formData) {
-  //console.log(formData);
   const fetchData = async () => {
     return await axios
       .post("http://localhost:5146/api/user/login", {
@@ -16,14 +15,12 @@ export async function ApiCall(formData) {
         password: formData.password,
       })
       .then((response) => {
-        console.log("trete", response);
         if (response.data !== "Incorrect Credentials") {
           localStorage.setItem("token", response.data);
         }
         return response;
       })
       .catch((error) => {
-        //console.log("errr", error);
         return error;
       });
   };
@@ -50,7 +47,6 @@ export async function ApiBookCatalog() {
 export async function ApiBookAdd(data) {
   const fetchData = async () => {
     let value = localStorage.getItem("token");
-    console.log("TOKEN: " + value);
 
     const config = {
       headers: {
@@ -90,7 +86,6 @@ export async function ApiBookAdd(data) {
 export async function ApiRentBook(data) {
   const fetchData = async () => {
     let value = localStorage.getItem("token");
-    console.log("TOKEN: " + value);
 
     const config = {
       headers: {
@@ -122,7 +117,6 @@ export async function ApiRentBook(data) {
 export async function ApiReturnBook(data) {
   const fetchData = async () => {
     let value = localStorage.getItem("token");
-    console.log("TOKEN: " + value);
 
     const config = {
       headers: {
@@ -154,7 +148,6 @@ export async function ApiReturnBook(data) {
 export async function ApiRentedBooks(data) {
   const fetchData = async () => {
     let value = localStorage.getItem("token");
-    console.log("TOKEN: " + value);
 
     const config = {
       headers: {
